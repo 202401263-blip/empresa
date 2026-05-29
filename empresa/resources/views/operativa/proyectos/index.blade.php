@@ -13,11 +13,10 @@
                     <th>Nombre Proyecto</th>
                     <th>Ubicación</th>
                     <th>Sup. Terreno</th>
-                    <th>Sup. Construida</th>
-                    <th>Presupuesto</th>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Fin Programada</th>
+                    <th>Fecha Fin Real</th>
                     <th>Avance %</th>
-                    <th>Inicio</th>
-                    <th>Fin Est.</th>
                     <th>Estado</th>
                 </tr>
             </thead>
@@ -28,12 +27,11 @@
                     <td><code>{{ $p->codigo_proyecto }}</code></td>
                     <td class="fw-bold">{{ $p->nombre_proyecto }}</td>
                     <td>{{ $p->ubicacion }}</td>
-                    <td>{{ number_format($p->superficie_terreno, 2) }}</td>
-                    <td>{{ number_format($p->superficie_construida, 2) }}</td>
-                    <td>{{ number_format($p->presupuesto_estimado, 2) }}</td>
+                    <td>{{ $p->superficie_m2 }}</td>
+                    <td>{{ $p->fecha_inicio_real }}</td>
+                    <td>{{ $p->fecha_fin_programada}}</td>
+                    <td>{{ $p->fecha_fin_real}}</td>
                     <td>{{ $p->porcentaje_avance }}%</td>
-                    <td>{{ $p->fecha_inicio_programada }}</td>
-                    <td>{{ $p->fecha_fin_programada }}</td>
                     <td>{{ $p->estado }}</td>
                 </tr>
                 @endforeach
