@@ -1,0 +1,24 @@
+# Cache de herramientas y editores locales
+.cursor/
+.openclaude/
+.codegraph/
+.openclaude-profile.json
+.phpunit.result.cache
+
+# Archivos del sistema operativo y entorno
+Thumbs.db
+.DS_Store
+*.local
+
+# --- Reglas específicas para la subcarpeta de Laravel (empresa/) ---
+empresa/.env
+empresa/bootstrap/cache/*
+empresa/storage/*.key
+empresa/storage/framework/cache/data/*
+empresa/storage/framework/views/*
+empresa/storage/framework/sessions/*
+empresa/storage/logs/*
+empresa/vendor/
+empresa/node_modules/
+empresa/public/build/
+empresa/public/storage
