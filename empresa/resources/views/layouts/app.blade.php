@@ -6,36 +6,104 @@
     <title>Sistema Constructora - Gestión</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('css/sidebar-interactive.css') }}">
     <style>
-        body { background-color: #f0f2f5; }
+        :root {
+            --primary-color: #0d6efd;
+            --sidebar-bg: #1a1f24;
+            --sidebar-hover: #252a30;
+            --text-muted: #adb5bd;
+            --text-white: #ffffff;
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            --bs-body-color: #212529;
+        }
+
+        body { 
+            background-color: #f0f2f5; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
         .sidebar {
             min-height: 100vh;
-            background-color: #212529;
+            background: linear-gradient(135deg, var(--sidebar-bg) 0%, #0f1217 100%);
             color: white;
-            padding-top: 20px;
+            padding: 20px 10px;
+            position: sticky;
+            top: 0;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #495057 transparent;
         }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #495057;
+            border-radius: 3px;
+        }
+
         .sidebar .nav-link {
-            color: #adb5bd;
-            padding: 12px 20px;
-            transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease;
-            border-radius: 4px;
-            margin: 2px 10px;
+            color: var(--text-muted);
+            padding: 10px 15px;
+            transition: var(--transition-smooth);
+            border-radius: 6px;
+            margin: 4px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+            position: relative;
         }
+
         .sidebar .nav-link:hover {
-            background: #343a40;
-            color: #ffffff;
-            transform: translateX(4px);
+            background: rgba(13, 110, 253, 0.15);
+            color: var(--text-white);
+            padding-left: 18px;
         }
-        .sidebar .nav-link i { width: 25px; }
+
+        .sidebar .nav-link i { 
+            width: 20px; 
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .sidebar .nav-link span {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
         .active-link {
-            background: #0d6efd !important;
-            color: white !important;
+            background: rgba(13, 110, 253, 0.25) !important;
+            color: var(--primary-color) !important;
+            font-weight: 600;
+            border-left: 3px solid var(--primary-color);
+            padding-left: 12px !important;
         }
+
+        .active-link i {
+            color: var(--primary-color);
+        }
+
         .submenu .nav-link {
             padding: 8px 20px 8px 45px !important;
             font-size: 0.85em;
         }
-        hr { border-top: 1px solid #495057; margin: 1rem 10px; }
+
+        hr { 
+            border-top: 1px solid #495057; 
+            margin: 1rem 10px; 
+        }
 
         .interactive-card,
         .stat-card {
@@ -97,115 +165,8 @@
                 </div>
                 @endauth
 
-                <ul class="nav flex-column">
-                    <li class="px-3 mt-2 mb-1 text-uppercase text-white-50 small fw-semibold">Inicio</li>
-                    <li class="nav-item">
-                        <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active-link' : '' }}">
-                            <i class="fas fa-gauge-high"></i> Panel de control
-                        </a>
-                    </li>
-
-                    <li class="px-3 mt-3 mb-1 text-uppercase text-white-50 small fw-semibold">Maestros</li>
-                    @if(Auth::user()->hasRole(['admin','gerente','contab','jefe obra','logist','rrhh']) && \Illuminate\Support\Facades\Route::has('operativa.ciudades.index'))
-                        <li class="nav-item"><a href="{{ route('operativa.ciudades.index') }}" class="nav-link {{ request()->routeIs('operativa.ciudades.*') ? 'active-link' : '' }}"><i class="fas fa-city"></i> Ciudades</a></li>
-                    @endif
-                    @if(Auth::user()->hasRole(['admin','gerente','contab','jefe obra','logist']) && \Illuminate\Support\Facades\Route::has('operativa.materiales.index'))
-                        <li class="nav-item"><a href="{{ route('operativa.materiales.index') }}" class="nav-link {{ request()->routeIs('operativa.materiales.*') ? 'active-link' : '' }}"><i class="fas fa-cubes-stacked"></i> Materiales</a></li>
-                    @endif
-                    @if(Auth::user()->hasRole(['admin','gerente','jefe obra','logist']) && \Illuminate\Support\Facades\Route::has('operativa.maquinarias.catalogo'))
-                        <li class="nav-item"><a href="{{ route('operativa.maquinarias.catalogo') }}" class="nav-link {{ request()->routeIs('operativa.maquinarias.catalogo*') ? 'active-link' : '' }}"><i class="fas fa-truck-monster"></i> Catálogo maquinaria</a></li>
-                    @endif
-
-                    <li class="px-3 mt-3 mb-1 text-uppercase text-white-50 small fw-semibold">Gestión Operativa</li>
-                    @if(Auth::user()->hasRole(['admin','gerente','contab']) && \Illuminate\Support\Facades\Route::has('operativa.clientes.index'))
-                        <li class="nav-item"><a href="{{ route('operativa.clientes.index') }}" class="nav-link {{ request()->routeIs('operativa.clientes.*') ? 'active-link' : '' }}"><i class="fas fa-users"></i> Clientes</a></li>
-                    @endif
-                    @if(Auth::user()->hasRole(['admin','gerente','contab','cliente']) && \Illuminate\Support\Facades\Route::has('operativa.contratos.index'))
-                        <li class="nav-item"><a href="{{ route('operativa.contratos.index') }}" class="nav-link {{ request()->routeIs('operativa.contratos.*') ? 'active-link' : '' }}"><i class="fas fa-file-signature"></i> Contratos</a></li>
-                    @endif
-                    @if(Auth::user()->hasRole(['admin','gerente','contab','jefe obra','logist','rrhh','cliente']) && \Illuminate\Support\Facades\Route::has('operativa.proyectos.index'))
-                        <li class="nav-item"><a href="{{ route('operativa.proyectos.index') }}" class="nav-link {{ request()->routeIs('operativa.proyectos.*') ? 'active-link' : '' }}"><i class="fas fa-diagram-project"></i> Proyectos</a></li>
-                    @endif
-                    @if(Auth::user()->hasRole(['admin','gerente','contab','jefe obra']) && \Illuminate\Support\Facades\Route::has('operativa.cotizaciones.index'))
-                        <li class="nav-item"><a href="{{ route('operativa.cotizaciones.index') }}" class="nav-link {{ request()->routeIs('operativa.cotizaciones.*') ? 'active-link' : '' }}"><i class="fas fa-file-invoice-dollar"></i> Cotizaciones</a></li>
-                    @endif
-                    @if(Auth::user()->hasRole(['admin','gerente','contab','cliente']) && \Illuminate\Support\Facades\Route::has('operativa.cuotas.index'))
-                        <li class="nav-item"><a href="{{ route('operativa.cuotas.index') }}" class="nav-link {{ request()->routeIs('operativa.cuotas.*') ? 'active-link' : '' }}"><i class="fas fa-money-check-dollar"></i> Cuotas de pago</a></li>
-                    @endif
-                    @if(Auth::user()->hasRole(['admin','contab','jefe obra','logist']) && \Illuminate\Support\Facades\Route::has('operativa.compras.index'))
-                        <li class="nav-item"><a href="{{ route('operativa.compras.index') }}" class="nav-link {{ request()->routeIs('operativa.compras.*') ? 'active-link' : '' }}"><i class="fas fa-cart-shopping"></i> Compras</a></li>
-                    @endif
-                    @if(Auth::user()->hasRole(['admin','gerente','jefe obra','logist']) && \Illuminate\Support\Facades\Route::has('operativa.inventario.index'))
-                        <li class="nav-item"><a href="{{ route('operativa.inventario.index') }}" class="nav-link {{ request()->routeIs('operativa.inventario.*') ? 'active-link' : '' }}"><i class="fas fa-boxes-stacked"></i> Inventario</a></li>
-                    @endif
-                    @if(Auth::user()->hasRole(['admin','gerente','jefe obra']) && \Illuminate\Support\Facades\Route::has('operativa.paralizaciones.index'))
-                        <li class="nav-item"><a href="{{ route('operativa.paralizaciones.index') }}" class="nav-link {{ request()->routeIs('operativa.paralizaciones.*') ? 'active-link' : '' }}"><i class="fas fa-circle-pause"></i> Paralizaciones</a></li>
-                    @endif
-                    @if(Auth::user()->hasRole(['admin','gerente','contab','jefe obra','cliente']) && \Illuminate\Support\Facades\Route::has('operativa.finalizadas.index'))
-                        <li class="nav-item"><a href="{{ route('operativa.finalizadas.index') }}" class="nav-link {{ request()->routeIs('operativa.finalizadas.*') ? 'active-link' : '' }}"><i class="fas fa-flag-checkered"></i> Obras terminadas</a></li>
-                    @endif
-
-                    <li class="px-3 mt-3 mb-1 text-uppercase text-white-50 small fw-semibold">Recursos Humanos</li>
-                    @if(Auth::user()->hasRole(['admin','gerente','jefe obra','rrhh']) && \Illuminate\Support\Facades\Route::has('rrhh.empleados.index'))
-                        <li class="nav-item"><a href="{{ route('rrhh.empleados.index') }}" class="nav-link {{ request()->routeIs('rrhh.empleados.*') ? 'active-link' : '' }}"><i class="fas fa-user-tie"></i> Empleados</a></li>
-                    @endif
-                    @if(Auth::user()->hasRole(['admin','jefe obra','rrhh']) && \Illuminate\Support\Facades\Route::has('rrhh.asignaciones.index'))
-                        <li class="nav-item"><a href="{{ route('rrhh.asignaciones.index') }}" class="nav-link {{ request()->routeIs('rrhh.asignaciones.*') ? 'active-link' : '' }}"><i class="fas fa-user-plus"></i> Asign. personal</a></li>
-                    @endif
-                    @if(Auth::user()->hasRole(['admin','jefe obra','rrhh']) && \Illuminate\Support\Facades\Route::has('operativa.asistencia.index'))
-                        <li class="nav-item"><a href="{{ route('operativa.asistencia.index') }}" class="nav-link {{ request()->routeIs('operativa.asistencia.*') ? 'active-link' : '' }}"><i class="fas fa-clock"></i> Control de horas</a></li>
-                    @endif
-                    @if(Auth::user()->hasRole(['admin','jefe obra','logist']) && \Illuminate\Support\Facades\Route::has('operativa.maquinarias.asignaciones'))
-                        <li class="nav-item"><a href="{{ route('operativa.maquinarias.asignaciones') }}" class="nav-link {{ request()->routeIs('operativa.maquinarias.asignaciones*') ? 'active-link' : '' }}"><i class="fas fa-tractor"></i> Asign. maquinaria</a></li>
-                    @endif
-                    @if(Auth::user()->hasRole(['admin','contab','rrhh']) && \Illuminate\Support\Facades\Route::has('rrhh.pagos.index'))
-                        <li class="nav-item"><a href="{{ route('rrhh.pagos.index') }}" class="nav-link {{ request()->routeIs('rrhh.pagos.*') ? 'active-link' : '' }}"><i class="fas fa-hand-holding-dollar"></i> Pagos / planillas</a></li>
-                    @endif
-                    @if(Auth::user()->hasRole(['admin','gerente','jefe obra']) && \Illuminate\Support\Facades\Route::has('rrhh.permisos.index'))
-                        <li class="nav-item"><a href="{{ route('rrhh.permisos.index') }}" class="nav-link {{ request()->routeIs('rrhh.permisos.*') ? 'active-link' : '' }}"><i class="fas fa-file-circle-check"></i> Permisos y trámites</a></li>
-                    @endif
-
-                    <li class="px-3 mt-3 mb-1 text-uppercase text-white-50 small fw-semibold">Reportes</li>
-                    @if(Auth::user()->hasRole(['admin','gerente','contab','jefe obra','logist']) && \Illuminate\Support\Facades\Route::has('reportes.costos.index'))
-                        <li class="nav-item">
-                            <a href="{{ route('reportes.costos.index') }}" class="nav-link {{ request()->routeIs('reportes.costos.*') ? 'active-link' : '' }}">
-                                <i class="fas fa-chart-pie"></i> Resumen costos
-                            </a>
-                        </li>
-                    @endif
-                    @if(Auth::user()->hasRole(['admin','gerente','contab','jefe obra','logist','rrhh']) && \Illuminate\Support\Facades\Route::has('alertas.index'))
-                        <li class="nav-item">
-                            <a href="{{ route('alertas.index') }}" class="nav-link {{ request()->routeIs('alertas.*') ? 'active-link' : '' }}">
-                                <i class="fas fa-bell"></i> Alertas y Notificaciones
-                            </a>
-                        </li>
-                    @endif
-                    @if(Auth::user()->hasRole(['admin']) && \Illuminate\Support\Facades\Route::has('reportes.log.index'))
-                        <li class="nav-item"><a href="{{ route('reportes.log.index') }}" class="nav-link {{ request()->routeIs('reportes.log.*') ? 'active-link' : '' }}"><i class="fas fa-shield-halved"></i> Log de cambios</a></li>
-                    @endif
-
-                    @if(Auth::user()->hasRole(['admin','rrhh']))
-                    <li class="nav-item mt-3">
-                        <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('rrhh.feriados.*') ? 'text-white fw-bold' : '' }}"
-                           data-bs-toggle="collapse"
-                           href="#menuConfiguracion"
-                           role="button"
-                           aria-expanded="{{ request()->routeIs('rrhh.feriados.*') ? 'true' : 'false' }}">
-                            <span><i class="fas fa-gear"></i> Configuración</span>
-                            <i class="fas fa-chevron-down small"></i>
-                        </a>
-                        <div class="collapse {{ request()->routeIs('rrhh.feriados.*') ? 'show' : '' }}" id="menuConfiguracion">
-                            <ul class="nav flex-column submenu">
-                                <li class="nav-item">
-                                    <a href="{{ route('rrhh.feriados.index') }}" class="nav-link {{ request()->routeIs('rrhh.feriados.*') ? 'text-white fw-bold' : '' }}">
-                                        <i class="fas fa-calendar-day me-2"></i> Feriados
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    @endif
-                </ul>
+                <!-- MENÚ REFACTORIZADO EN 4 BLOQUES INTERACTIVOS -->
+                @include('partials.sidebar-menu')
 
                 @auth
                 <div class="mt-4 px-3">
@@ -241,5 +202,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('js/sidebar-interactive.js') }}"></script>
 </body>
 </html>

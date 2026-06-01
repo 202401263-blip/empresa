@@ -1,0 +1,234 @@
+/* Estilos avanzados para bloques interactivos del sidebar */
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-blocks-container {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+/* Estilos mejorados para los bloques */
+.sidebar-block {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, rgba(13, 110, 253, 0.02) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar-block:hover {
+    border-color: rgba(13, 110, 253, 0.2);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(13, 110, 253, 0.04) 100%);
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.08);
+}
+
+/* Header del bloque */
+.block-header {
+    background: rgba(255, 255, 255, 0.02);
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.25s ease;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.block-header:hover {
+    background: rgba(13, 110, 253, 0.08);
+    border-bottom-color: rgba(13, 110, 253, 0.15);
+}
+
+.block-header:active {
+    transform: scale(0.98);
+}
+
+/* Icono del bloque */
+.block-icon {
+    font-size: 1.1rem;
+    width: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0d6efd;
+    background: rgba(13, 110, 253, 0.1);
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.block-header:hover .block-icon {
+    transform: scale(1.1);
+    background: rgba(13, 110, 253, 0.2);
+}
+
+/* Chevron del bloque */
+.block-chevron {
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    color: rgba(173, 181, 189, 0.7);
+}
+
+.block-header[aria-expanded="true"] .block-chevron {
+    transform: rotate(-180deg);
+    color: #0d6efd;
+}
+
+/* Items del bloque */
+.block-items {
+    padding: 8px 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.block-items.show {
+    max-height: 2000px;
+}
+
+.block-items .nav-link {
+    position: relative;
+    margin: 2px 8px;
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+.block-items .nav-link::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 0;
+    background: linear-gradient(to bottom, transparent, var(--primary-color), transparent);
+    border-radius: 2px;
+    transition: all 0.2s ease;
+}
+
+.block-items .nav-link:hover::before {
+    height: 20px;
+    opacity: 1;
+}
+
+/* Efecto ripple al hacer click */
+.sidebar-block .nav-link::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(13, 110, 253, 0.2);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.sidebar-block .nav-link:active::after {
+    animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+    to {
+        width: 300px;
+        height: 300px;
+        opacity: 0;
+    }
+}
+
+/* Animación de entrada para los items */
+.block-items .nav-link {
+    animation: slideInLeft 0.3s ease forwards;
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Badge del usuario mejorado */
+.user-badge {
+    background: linear-gradient(135deg, rgba(13, 110, 253, 0.1) 0%, rgba(13, 110, 253, 0.05) 100%);
+    border: 1px solid rgba(13, 110, 253, 0.2);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin: 0 10px 16px;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.user-badge:hover {
+    border-color: rgba(13, 110, 253, 0.4);
+    background: linear-gradient(135deg, rgba(13, 110, 253, 0.15) 0%, rgba(13, 110, 253, 0.08) 100%);
+}
+
+/* Scroll personalizado */
+.sidebar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(13, 110, 253, 0.3);
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(13, 110, 253, 0.5);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .sidebar {
+        padding: 15px 5px;
+    }
+    
+    .sidebar-block {
+        margin-bottom: 8px;
+    }
+    
+    .block-header {
+        padding: 10px 12px !important;
+    }
+    
+    .block-items .nav-link {
+        padding: 8px 12px 8px 35px !important;
+        font-size: 0.85rem;
+    }
+}
+
+/* Temas y variaciones */
+.sidebar-block.collapsed-on-load .block-items {
+    display: none;
+}
+
+/* Estado deshabilitado */
+.sidebar-block.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.block-header.disabled {
+    cursor: not-allowed;
+}
+
+/* Notificaciones / badges en items */
+.block-items .nav-link .badge {
+    margin-left: auto;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    background: rgba(220, 53, 69, 0.8);
+    border-radius: 10px;
+}
