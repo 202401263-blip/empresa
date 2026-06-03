@@ -1,59 +1,247 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+  # Sistema de Gestión Empresarial Constructora
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+  Sistema integral de gestión para empresa constructora, desarrollado con Laravel 11 sobre motor SQL Server, que centraliza la operación de ventas,
+  proyectos, finanzas y logística en un único entorno unificado.
 
-## About Laravel
+  ---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+  ## 1. ARQUITECTURA DEL PROYECTO
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+  ### Descripción del Sistema
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+  Plataforma web que integra y automatiza los procesos operativos de una empresa constructora mediante módulos especializados:
 
-## Learning Laravel
+  - **Clientes**: Gestión de información de clientes, historial de contratos y seguimiento de pagos.
+  - **Contratos**: Creación, seguimiento y control de contratos con generación automática de cuotas de pago.
+  - **Proyectos**: Administración de proyectos constructivos con asignación de recursos y seguimiento de avance.
+  - **Cotizaciones**: Creación y gestión de cotizaciones para clientes con cálculo automático de materiales y mano de obra.
+  - **Compras**: Control de compras de materiales, proveedores y órdenes de compra con integración de inventario.
+  - **Alertas**: Notificaciones automáticas de vencimientos, pagos pendientes y eventos críticos.
+  - **Auditoría**: Registro completo de actividad del sistema con trazabilidad de cambios y sesiones de usuario.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+  ### Stack Tecnológico
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+  | Componente | Tecnología |
+  |------------|------------|
+  | Framework | Laravel 11 |
+  | Lenguaje | PHP 8.2+ |
+  | Base de Datos | SQL Server (driver `sqlsrv`) |
+  | Frontend | Bootstrap 5, FontAwesome 6 |
+  | Build Tool | Vite, NPM |
+  | Autenticación | Laravel Breeze/Sanctum |
 
-## Laravel Sponsors
+  ### Mapa Visual del Repositorio
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```
+constructora-system/
+├── README.md                      # Este documento principal
+├── triggers_resumen_costos.sql    # Triggers SQL Server para costos automáticos
+│
+└── empresa/                       # Subcarpeta con el Proyecto Laravel 11 (backend)
+    ├── app/
+    │   ├── Http/Controllers/      # Controladores de la aplicación
+    │   ├── Models/                # Modelos Eloquent mapeados a SQL Server
+    │   └── Providers/             # Proveedores de servicios (AppServiceProvider)
+    ├── config/                    # Configuraciones del framework (auth.php)
+    ├── database/
+    │   ├── migrations/            # Migraciones de la base de datos
+    │   └── seeders/               # Poblado de datos iniciales
+    ├── resources/
+    │   └── views/                 # Vistas Blade con Bootstrap 5 (reportes)
+    ├── routes/
+    │   └── web.php                # Archivo de rutas de la aplicación
+    ├── public/                    # Punto de entrada público del servidor web
+    ├── composer.json              # Dependencias de paquetes PHP
+    └── .env.example               # Plantilla de variables de entorno
+```
+  ---
 
-### Premium Partners
+  ## 2. REQUISITOS PREVIOS E INSTALACIÓN
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+  ### Requisitos del Entorno
 
-## Contributing
+  - PHP 8.2 o superior
+  - Composer (gestor de dependencias PHP)
+  - Node.js & NPM
+  - Extensión `PDO_SQLSRV` habilitada en `php.ini`
+  - SQL Server 2019+ (esquema `empresa_constructora5`)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+  ### Paso a Paso de Instalación
 
-## Code of Conduct
+  #### 1. Clonar repositorio
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+  ```bash
+  git clone <url-repositorio> constructora-system
+  cd constructora-system
+  ```
 
-## Security Vulnerabilities
+  #### 2. Configurar el entorno
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+  ```bash
+  cd empresa
+  cp .env.example .env
+  ```
 
-## License
+  Editar `.env` con las credenciales de conexión:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+  ```env
+  DB_CONNECTION=sqlsrv
+  DB_HOST=127.0.0.1
+  DB_PORT=1433
+  DB_DATABASE=Empresa_constructora5
+  DB_USERNAME=usuario_db
+  DB_PASSWORD=contraseña_db
+  ```
+
+  > **Importante**: Verificar que el proveedor de usuarios en `config/auth.php` apunte correctamente al modelo deseado, especialmente si se han realizado migraciones personalizadas.
+
+  #### 3. Instalar dependencias
+
+  ```bash
+  composer install
+  npm install
+  ```
+
+  #### 4. Generar llave de aplicación y limpiar caché
+
+  ```bash
+  php artisan key:generate
+  php artisan config:clear
+  php artisan route:clear
+  php artisan view:clear
+  ```
+
+  #### 5. Iniciar el servidor de desarrollo
+
+  ```bash
+  npm run dev    # En una terminal para compilar assets
+  php artisan serve  # En otra terminal para el servidor Laravel
+  ```
+
+  La aplicación estará disponible en `http://localhost:8000`
+
+  ---
+
+  ## 3. MÓDULOS RECIENTES IMPLEMENTADOS (LOGS & COSTOS)
+
+  ### Log de Auditoría
+
+  El sistema implementa auditoría automática mediante dos mecanismos de Laravel 11:
+
+  - **Event Discovery**: Eventos automáticos que capturan Login y Logout de usuarios sin necesidad de registro manual. Los eventos `LogUserLogin` y `LogUserLogout` registran en la tabla física `log_cambios` de SQL Server con timestamp, ID de usuario y dirección IP.
+  
+  - **Observers globales**: Cada modelo Eloquent dispone de observers que interceptan operaciones `created`, `updated` y `deleted`, persistiendo automáticamente en `log_cambios` con el tipo de operación, tabla afectada, datos previos y nuevos, garantizando trazabilidad completa de transacciones CRUD.
+
+  ### Resumen de Costos
+
+  El módulo de costos financieros proporciona consolidación en tiempo real mediante:
+
+  - **Procedimiento Almacenado** `dbo.p_refrescar_resumen_costos`: Calcula automáticamente los costos desglosados de materiales (`compra`/`detalle_compra`), maquinaria (`asignacion_maquinaria`) y mano de obra (`pago_empleado`).
+  
+  - **Triggers automáticos**: Los triggers definidos en `triggers_resumen_costos.sql` ejecutan el SP tras cada operación INSERT, UPDATE o DELETE en las tablas de costos, manteniendo el reporte financiero consolidado actualizado sin intervención manual.
+  
+  - **Acceso**: El endpoint `/dashboard` expone el reporte `resumen_costos` con indicadores clave para toma de decisiones.
+
+  ---
+
+  ## 4. FLUJO DE TRABAJO EN GIT (GITFLOW)
+
+  ### Directrices para Desarrolladores
+
+  - ⛔ **Prohibido** pushear directo a `main` o `developer`. Estas ramas están protegidas y requieren revisión por pares.
+  - ✅ Todos los cambios deben servirse en ramas `feature/*` aprobadas mediante Pull Request.
+  - 🔄 Mantener sincronización constante con `developer` mediante rebase o merge.
+
+  ### Pasos para Subir Cambios
+
+  #### 1. Crear rama feature
+
+  ```bash
+  git checkout developer
+  git pull origin developer
+  git checkout -b feature/nombre-descriptivo
+  ```
+
+  #### 2. Realizar commits semánticos
+
+  ```bash
+  git add .
+  git commit -m "feat: agregar validación de cuotas en módulo contratos"
+  ```
+
+  **Prefijos obligatorios:**
+
+  - `feat:` — Nueva funcionalidad
+  - `fix:` — Corrección de bug
+  - `refactor:` — Refactorización de código
+  - `docs:` — Documentación
+  - `style:` — Formateo/estilos
+  - `test:` — Tests
+
+  #### 3. Abrir Pull Request
+
+  ```bash
+  git push origin feature/nombre-descriptivo
+  ```
+
+  Crear Pull Request desde `feature/*` hacia `developer` en GitHub/GitLab. Asignar revisores y esperar aprobación antes de merge.
+
+  ---
+
+  ## 5. VARIABLES DE ENTORNO IMPORTANTES
+
+  Las siguientes variables en `.env` son críticas para el funcionamiento:
+
+  | Variable | Descripción | Ejemplo |
+  |----------|-------------|---------|
+  | `APP_ENV` | Ambiente (local, staging, production) | `local` |
+  | `APP_DEBUG` | Modo debug | `true` (solo desarrollo) |
+  | `DB_CONNECTION` | Driver de base de datos | `sqlsrv` |
+  | `DB_HOST` | Servidor SQL Server | `127.0.0.1` |
+  | `DB_DATABASE` | Base de datos | `Empresa_constructora5` |
+  | `SESSION_DRIVER` | Driver de sesión | `file` o `cookie` |
+
+  > ⚠️ **Nunca** versionar `.env` con credenciales reales. Siempre usar `.env.example` como referencia.
+
+  ---
+
+  ## 6. SOLUCIÓN DE PROBLEMAS COMUNES
+
+  ### Error: SQLSTATE[HY000]: General error
+
+  **Causa**: La extensión `PDO_SQLSRV` no está habilitada o SQL Server no es accesible.
+
+  **Solución**:
+  ```bash
+  # Verificar si la extensión está cargada
+  php -i | grep sqlsrv
+  # Si no aparece, habilitar en php.ini
+  extension=php_pdo_sqlsrv.dll
+  ```
+
+  ### Error: "Class not found" o "Model not found"
+
+  **Causa**: Caché de Laravel desactualizado.
+
+  **Solución**:
+  ```bash
+  php artisan clear-all
+  php artisan cache:clear
+  composer dump-autoload
+  ```
+
+  ### Assets (CSS/JS) no se cargan en navegador
+
+  **Causa**: Vite no está compilando assets.
+
+  **Solución**: Asegurar que `npm run dev` está ejecutándose en otra terminal.
+
+  ---
+
+  ## 7. SOPORTE Y CONTACTO
+
+  Para reportar problemas, sugerencias o consultas sobre el sistema:
+
+  - 📧 **Email**: contacto@empresa.constructora
+  - 🐛 **Issues**: Abrir issue en el repositorio de Git
+  - 📋 **Documentación**: Consultar la wiki del repositorio para guías detalladas

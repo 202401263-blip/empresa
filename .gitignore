@@ -1,24 +1,24 @@
-*.log
-.DS_Store
-.env
-.env.backup
-.env.production
-.phpactor.json
+# Cache de herramientas y editores locales
+.cursor/
+.openclaude/
+.codegraph/
+.openclaude-profile.json
 .phpunit.result.cache
-/.fleet
-/.idea
-/.nova
-/.phpunit.cache
-/.vscode
-/.zed
-/auth.json
-/node_modules
-/public/build
-/public/hot
-/public/storage
-/storage/*.key
-/storage/pail
-/vendor
-Homestead.json
-Homestead.yaml
+
+# Archivos del sistema operativo y entorno
 Thumbs.db
+.DS_Store
+*.local
+
+# --- Reglas específicas para la subcarpeta de Laravel (empresa/) ---
+empresa/.env
+empresa/bootstrap/cache/*
+empresa/storage/*.key
+empresa/storage/framework/cache/data/*
+empresa/storage/framework/views/*
+empresa/storage/framework/sessions/*
+empresa/storage/logs/*
+empresa/vendor/
+empresa/node_modules/
+empresa/public/build/
+empresa/public/storage
